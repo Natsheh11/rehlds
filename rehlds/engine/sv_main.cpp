@@ -880,7 +880,8 @@ qboolean SV_ValidClientMulticast(client_t *client, int soundLeaf, int to)
 		return TRUE;
 	}
 
-	int bitNumber = SV_PointLeafnum(client->edict->v.origin);
+	vec_t temp_origin = *(client->pViewEntity->v.origin);
+	int bitNumber = SV_PointLeafnum(&temp_origin);
 	if (mask[(bitNumber - 1) >> 3] & (1 << ((bitNumber - 1) & 7)))
 	{
 		return TRUE;

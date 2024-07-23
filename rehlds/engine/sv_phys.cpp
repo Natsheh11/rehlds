@@ -1385,10 +1385,12 @@ void SV_Physics_Step(edict_t *ent)
 			SV_AddGravity(ent);
 	}
 
-	if (!VectorIsZero(ent->v.velocity) || !VectorIsZero(ent->v.basevelocity))
+	if(ent->v.velocity[2] > 0.0 || ent->v.basevelocity[2] > 0.0)
 	{
 		ent->v.flags &= ~FL_ONGROUND;
-
+	}
+	else if (!VectorIsZero(ent->v.velocity) || !VectorIsZero())
+	{
 		// apply friction
 		// let dead monsters who aren't completely onground slide
 		if (wasonground && (ent->v.health > 0.0f || SV_CheckBottom(ent)))
@@ -1397,7 +1399,7 @@ void SV_Physics_Step(edict_t *ent)
 			if (speed)
 			{
 				float friction = sv_friction.value * ent->v.friction;
-				ent->v.friction = 1.0f;
+				//ent->v.friction = 1.0f; why reseting this ?!?!?!
 
 				float control = (speed < sv_stopspeed.value) ? sv_stopspeed.value : speed;
 				float newspeed = speed - (host_frametime * control * friction);

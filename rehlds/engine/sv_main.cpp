@@ -917,7 +917,12 @@ qboolean SV_ValidClientMulticast(client_t *client, int soundLeaf, int to)
 		return TRUE;
 	}
 
-	int bitNumber = SV_PointLeafnum(client->edict->v.origin);
+	int bitNumber;
+	if( !(client->pViewEntity) )
+		bitNumber = SV_PointLeafnum(client->edict->v.origin);
+	else
+		bitNumber = SV_PointLeafnum(client->pViewEntity->v.origin);
+	
 	if (mask[(bitNumber - 1) >> 3] & (1 << ((bitNumber - 1) & 7)))
 	{
 		return TRUE;
@@ -8593,3 +8598,4 @@ NOXREF qboolean BIsValveGame(void)
 	}
 	return FALSE;
 }
+
